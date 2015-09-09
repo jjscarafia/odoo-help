@@ -1,0 +1,44 @@
+addons:
+  apt:
+    packages:
+      - expect-dev  # provides unbuffer utility
+      - python-lxml # because pip installation is slow
+
+language: python
+sudo: false
+cache: pip
+
+python:
+  - "2.7"
+
+env:
+  global:
+  - VERSION="8.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0"
+  - TRANSIFEX_USER='jjscarafia'
+  - TRANSIFEX_ORGANIZATION='adhoc'
+  # to get secure, run 'travis encrypt TRANSIFEX_PASSWORD=[transifex_password] -r [github_repo]'
+  # example of github repo 'ingadhoc/odoo-infrastructure'
+  - secure: 2oLpG3bEDdPVzJqyPIl7WhYUr7vKAILYfkWLKxTcFwlRWPpma0JZkbCNBLYcXeLTdyDBzdu5K3aJw5OmZRQNfVuGlYqMDPu2970RGdClSeHSwzPFxlLItuozMU1rrWiijuMg7MqCYawUEOaJ/vz3qsBTJiF6mxWKWmKgq2CykoVRtVlVS7LinySh1QnZ/NXsAJnBwn2e+kSaeG2Hzcny8J6+ippZaQ1DLiR6H9AzdlBty9imFlgu6+2wljdflTGBLpzXq+s6VO9Vytm7Pn2bPPpSSFjrVFtn6sCO4P4WXa65H7okjDrpntmOvCg/sCbZkMkcv5qhiSc18yDCtyvASNQQdmOFfazf/OhU+RSblOAgALqTncyfbnTRGVJ8pQQI4Ab4L1XKKIVsaS7RMuOV2s1Yg6ftSTnEPrDwX+a98IzzQ5PwdYLr8Eg8N280aYWonfO4YAz8wChAJDP5gusZNeilWnSeURhkIl7i+1yTW4iVrS+t0yOmZgOqwmQ7vYQwSUXOCwV4JF2JEIqP/iZGYUpycCXNK+CR3mUo3/eqwT9mRCvFxPmhn/CXmV3fD3xmbGIvmYqH3+XdybMhTMSEkotEcrSVjezXWDzJTN/6oBQco7dwxKdL9pqnxwFT82gya9HXqD3F/gOoLSA7MX5uryBQMWJQFBy+lfBttVwOGxY=
+
+  matrix:
+  #- LINT_CHECK="1"
+  - TRANSIFEX="1"
+  - TESTS="1" ODOO_REPO="odoo/odoo"
+  - UNIT_TEST="1"
+
+virtualenv:
+  system_site_packages: true
+
+install:
+  # repository requirements
+  - pip install -r requirements.txt
+
+  - git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
+  - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
+  - travis_install_nightly
+
+script:
+  - travis_run_tests
+
+after_success:
+  coveralls
