@@ -18,22 +18,23 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{   'active': False,
+{'active': False,
     'author':  'ADHOC SA',
+    'website': 'www.adhoc.com.ar',
+    'license': 'AGPL-3',
     'category': 'Knowledge Management',
     'demo_xml': [
     ],
-    'depends': ['help_doc','portal'],
+    'depends': ['help_doc', 'portal'],
     'description': 'Autoinstallable module for documentation with portal module installed',
-    'installable': True,
-    'license': 'AGPL-3',
     'name': 'Odoo Portal Help Documentation',
     'test': [],
     'data': [
         'menu_item.xml',
-        ],
+    ],
     'version': '8.0.0.0.0',
     'auto_install': True,
-    'website': 'www.adhoc.com.ar',}
+    'installable': True
+ }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
